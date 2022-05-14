@@ -15,6 +15,11 @@ type Tag = {
   node_id: string;
 };
 
+type Repo = {
+  owner: string;
+  repo: string;
+}
+
 export function getOctokitSingleton() {
   if (octokitSingleton) {
     return octokitSingleton;
@@ -30,12 +35,13 @@ export function getOctokitSingleton() {
 export async function listTags(
   shouldFetchAllTags = false,
   fetchedTags: Tag[] = [],
-  page = 1
+  page = 1,
+  repo: Repo = context.repo
 ): Promise<Tag[]> {
   const octokit = getOctokitSingleton();
 
   const tags = await octokit.repos.listTags({
-    ...context.repo,
+    ...repo,
     per_page: 100,
     page,
   });
@@ -44,7 +50,7 @@ export async function listTags(
     return [...fetchedTags, ...tags.data];
   }
 
-  return listTags(shouldFetchAllTags, [...fetchedTags, ...tags.data], page + 1);
+  return listTags(shouldFetchAllTags, [...fetchedTags, ...tags.data], page + 1, repo);
 }
 
 /**
@@ -52,12 +58,12 @@ export async function listTags(
  * @param baseRef - old commit
  * @param headRef - new commit
  */
-export async function compareCommits(baseRef: string, headRef: string) {
+export async function compareCommits(baseRef: string, headRef: string, repo: Repo) {
   const octokit = getOctokitSingleton();
   core.debug(`Comparing commits (${baseRef}...${headRef})`);
 
   const commits = await octokit.repos.compareCommits({
-    ...context.repo,
+    ...repo,
     base: baseRef,
     head: headRef,
   });
@@ -68,7 +74,8 @@ export async function compareCommits(baseRef: string, headRef: string) {
 export async function createTag(
   newTag: string,
   createAnnotatedTag: boolean,
-  GITHUB_SHA: string
+  GITHUB_SHA: string,
+  repo: Repo
 ) {
   const octokit = getOctokitSingleton();
   let annotatedTag:
@@ -77,7 +84,7 @@ export async function createTag(
   if (createAnnotatedTag) {
     core.debug(`Creating annotated tag.`);
     annotatedTag = await octokit.git.createTag({
-      ...context.repo,
+      ...repo,
       tag: newTag,
       message: newTag,
       object: GITHUB_SHA,
@@ -87,7 +94,7 @@ export async function createTag(
 
   core.debug(`Pushing new tag to the repo.`);
   await octokit.git.createRef({
-    ...context.repo,
+    ...repo,
     ref: `refs/tags/${newTag}`,
     sha: annotatedTag ? annotatedTag.data.sha : GITHUB_SHA,
   });

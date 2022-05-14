@@ -2,6 +2,7 @@ import * as core from '@actions/core';
 import { gte, inc, parse, ReleaseType, SemVer, valid } from 'semver';
 import { analyzeCommits } from '@semantic-release/commit-analyzer';
 import { generateNotes } from '@semantic-release/release-notes-generator';
+import { context } from '@actions/github';
 import {
   getBranchFromRef,
   isPr,
@@ -22,6 +23,8 @@ export default async function main() {
     | 'false';
   const tagPrefix = core.getInput('tag_prefix');
   const customTag = core.getInput('custom_tag');
+  const ownerInput = core.getInput('owner');
+  const repoInput = core.getInput('repo');
   const releaseBranches = core.getInput('release_branches');
   const preReleaseBranches = core.getInput('pre_release_branches');
   const appendToPreReleaseTag = core.getInput('append_to_pre_release_tag');
@@ -49,6 +52,11 @@ export default async function main() {
     return;
   }
 
+  // Ensure ownerInput and repoInput are both set
+  if (ownerInput !== "" && repoInput === "" || repoInput != "" && ownerInput === "") {
+    core.setFailed('both owner and repo must be set');
+    return;
+  }
   const currentBranch = getBranchFromRef(GITHUB_REF);
   const isReleaseBranch = releaseBranches
     .split(',')
@@ -189,6 +197,9 @@ export default async function main() {
   core.info(`New tag after applying prefix is ${newTag}.`);
   core.setOutput('new_tag', newTag);
 
+  let repo = (repoInput === "") ? process.env.GITHUB_REPOSITORY: repoInput;
+  let serverUrl = (ownerInput === "") ? process.env.GITHUB_SERVER_URL: `https://github.com/${ownerInput}`;
+
   const changelog = await generateNotes(
     {
       preset: 'conventionalcommits',
@@ -200,7 +211,7 @@ export default async function main() {
       commits,
       logger: { log: console.info.bind(console) },
       options: {
-        repositoryUrl: `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}`,
+        repositoryUrl: `${serverUrl}/${repo}`,
       },
       lastRelease: { gitTag: latestTag.name },
       nextRelease: { gitTag: newTag, version: newVersion },
@@ -226,5 +237,12 @@ export default async function main() {
     return;
   }
 
-  await createTag(newTag, createAnnotatedTag, commitRef);
+  let repoContext = context.repo
+  if (repoInput !== "" && ownerInput !== "") {
+    repoContext = {
+      repo: repoInput,
+      owner: ownerInput,
+    }
+  }
+  await createTag(newTag, createAnnotatedTag, commitRef, repoContext);
 }
