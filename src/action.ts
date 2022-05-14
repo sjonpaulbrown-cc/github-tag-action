@@ -53,7 +53,10 @@ export default async function main() {
   }
 
   // Ensure ownerInput and repoInput are both set
-  if (ownerInput !== "" && repoInput === "" || repoInput != "" && ownerInput === "") {
+  if (
+    (ownerInput !== '' && repoInput === '') ||
+    (repoInput != '' && ownerInput === '')
+  ) {
     core.setFailed('both owner and repo must be set');
     return;
   }
@@ -197,8 +200,11 @@ export default async function main() {
   core.info(`New tag after applying prefix is ${newTag}.`);
   core.setOutput('new_tag', newTag);
 
-  let repo = (repoInput === "") ? process.env.GITHUB_REPOSITORY: repoInput;
-  let serverUrl = (ownerInput === "") ? process.env.GITHUB_SERVER_URL: `https://github.com/${ownerInput}`;
+  let repo = repoInput === '' ? process.env.GITHUB_REPOSITORY : repoInput;
+  let serverUrl =
+    ownerInput === ''
+      ? process.env.GITHUB_SERVER_URL
+      : `https://github.com/${ownerInput}`;
 
   const changelog = await generateNotes(
     {
@@ -237,12 +243,12 @@ export default async function main() {
     return;
   }
 
-  let repoContext = context.repo
-  if (repoInput !== "" && ownerInput !== "") {
+  let repoContext = context.repo;
+  if (repoInput !== '' && ownerInput !== '') {
     repoContext = {
       repo: repoInput,
       owner: ownerInput,
-    }
+    };
   }
   await createTag(newTag, createAnnotatedTag, commitRef, repoContext);
 }

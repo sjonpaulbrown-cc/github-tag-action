@@ -18,7 +18,7 @@ type Tag = {
 type Repo = {
   owner: string;
   repo: string;
-}
+};
 
 export function getOctokitSingleton() {
   if (octokitSingleton) {
@@ -50,7 +50,12 @@ export async function listTags(
     return [...fetchedTags, ...tags.data];
   }
 
-  return listTags(shouldFetchAllTags, [...fetchedTags, ...tags.data], page + 1, repo);
+  return listTags(
+    shouldFetchAllTags,
+    [...fetchedTags, ...tags.data],
+    page + 1,
+    repo
+  );
 }
 
 /**
@@ -58,7 +63,11 @@ export async function listTags(
  * @param baseRef - old commit
  * @param headRef - new commit
  */
-export async function compareCommits(baseRef: string, headRef: string, repo: Repo) {
+export async function compareCommits(
+  baseRef: string,
+  headRef: string,
+  repo: Repo = context.repo
+) {
   const octokit = getOctokitSingleton();
   core.debug(`Comparing commits (${baseRef}...${headRef})`);
 
@@ -75,7 +84,7 @@ export async function createTag(
   newTag: string,
   createAnnotatedTag: boolean,
   GITHUB_SHA: string,
-  repo: Repo
+  repo: Repo = context.repo
 ) {
   const octokit = getOctokitSingleton();
   let annotatedTag:

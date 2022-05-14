@@ -62,7 +62,8 @@ describe('github-tag-action', () => {
       expect(mockCreateTag).toHaveBeenCalledWith(
         'v0.0.1',
         expect.any(Boolean),
-        expect.any(String)
+        expect.any(String),
+        { owner: 'org', repo: 'repo' }
       );
       expect(mockSetFailed).not.toBeCalled();
     });
@@ -92,7 +93,8 @@ describe('github-tag-action', () => {
       expect(mockCreateTag).toHaveBeenCalledWith(
         'v0.0.1',
         expect.any(Boolean),
-        expect.any(String)
+        expect.any(String),
+        { owner: 'org', repo: 'repo' }
       );
       expect(mockSetFailed).not.toBeCalled();
     });
@@ -169,7 +171,8 @@ describe('github-tag-action', () => {
       expect(mockCreateTag).toHaveBeenCalledWith(
         'v2.0.0',
         expect.any(Boolean),
-        expect.any(String)
+        expect.any(String),
+        { owner: 'org', repo: 'repo' }
       );
       expect(mockSetFailed).not.toBeCalled();
     });
@@ -211,7 +214,8 @@ describe('github-tag-action', () => {
       expect(mockCreateTag).toHaveBeenCalledWith(
         'v1.3.0',
         expect.any(Boolean),
-        expect.any(String)
+        expect.any(String),
+        { owner: 'org', repo: 'repo' }
       );
       expect(mockSetFailed).not.toBeCalled();
     });
@@ -257,7 +261,8 @@ describe('github-tag-action', () => {
       expect(mockCreateTag).toHaveBeenCalledWith(
         'v1.2.4',
         expect.any(Boolean),
-        expect.any(String)
+        expect.any(String),
+        { owner: 'org', repo: 'repo' }
       );
       expect(mockSetFailed).not.toBeCalled();
     });
@@ -297,7 +302,8 @@ describe('github-tag-action', () => {
       expect(mockCreateTag).toHaveBeenCalledWith(
         'v1.3.0',
         expect.any(Boolean),
-        expect.any(String)
+        expect.any(String),
+        { owner: 'org', repo: 'repo' }
       );
       expect(mockSetFailed).not.toBeCalled();
     });
@@ -341,7 +347,8 @@ describe('github-tag-action', () => {
       expect(mockCreateTag).toHaveBeenCalledWith(
         'v2.0.0',
         expect.any(Boolean),
-        expect.any(String)
+        expect.any(String),
+        { owner: 'org', repo: 'repo' }
       );
       expect(mockSetFailed).not.toBeCalled();
     });
@@ -395,7 +402,8 @@ describe('github-tag-action', () => {
       expect(mockCreateTag).toHaveBeenCalledWith(
         'v2.2.0',
         expect.any(Boolean),
-        expect.any(String)
+        expect.any(String),
+        { owner: 'org', repo: 'repo' }
       );
       expect(mockSetFailed).not.toBeCalled();
     });
@@ -440,7 +448,8 @@ describe('github-tag-action', () => {
       expect(mockCreateTag).toHaveBeenCalledWith(
         'v1.3.0',
         expect.any(Boolean),
-        expect.any(String)
+        expect.any(String),
+        { owner: 'org', repo: 'repo' }
       );
       expect(mockSetFailed).not.toBeCalled();
     });
@@ -522,7 +531,8 @@ describe('github-tag-action', () => {
       expect(mockCreateTag).toHaveBeenCalledWith(
         'v1.2.4-prerelease.0',
         expect.any(Boolean),
-        expect.any(String)
+        expect.any(String),
+        { owner: 'org', repo: 'repo' }
       );
       expect(mockSetFailed).not.toBeCalled();
     });
@@ -560,7 +570,8 @@ describe('github-tag-action', () => {
       expect(mockCreateTag).toHaveBeenCalledWith(
         'v1.2.4-prerelease.0',
         expect.any(Boolean),
-        expect.any(String)
+        expect.any(String),
+        { owner: 'org', repo: 'repo' }
       );
       expect(mockSetFailed).not.toBeCalled();
     });
@@ -600,7 +611,8 @@ describe('github-tag-action', () => {
       expect(mockCreateTag).toHaveBeenCalledWith(
         'v1.3.0-prerelease.0',
         expect.any(Boolean),
-        expect.any(String)
+        expect.any(String),
+        { owner: 'org', repo: 'repo' }
       );
       expect(mockSetFailed).not.toBeCalled();
     });
@@ -644,7 +656,8 @@ describe('github-tag-action', () => {
       expect(mockCreateTag).toHaveBeenCalledWith(
         'v2.0.0-prerelease.0',
         expect.any(Boolean),
-        expect.any(String)
+        expect.any(String),
+        { owner: 'org', repo: 'repo' }
       );
       expect(mockSetFailed).not.toBeCalled();
     });
@@ -701,7 +714,8 @@ describe('github-tag-action', () => {
       expect(mockCreateTag).toHaveBeenCalledWith(
         'v2.2.0-prerelease.0',
         expect.any(Boolean),
-        expect.any(String)
+        expect.any(String),
+        { owner: 'org', repo: 'repo' }
       );
       expect(mockSetFailed).not.toBeCalled();
     });
@@ -746,7 +760,8 @@ describe('github-tag-action', () => {
       expect(mockCreateTag).toHaveBeenCalledWith(
         'v1.3.0-prerelease.0',
         expect.any(Boolean),
-        expect.any(String)
+        expect.any(String),
+        { owner: 'org', repo: 'repo' }
       );
       expect(mockSetFailed).not.toBeCalled();
     });
